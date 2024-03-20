@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Animator _playerAnimator;
     [SerializeField] private float _playerSpeed = 0;
     [SerializeField] private Lane _currentLane;
     [SerializeField] private float _laneWidth;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Rigidbody _rigidbody; // Ссылка на компонент Rigidbody
     [SerializeField] private bool _isOnRoad;
+
+    void Start()
+    {
+        _playerAnimator.SetBool("isRunning", true);
+    }
 
     // Update is called once per frame
     void Update()
@@ -38,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
             _isOnRoad = false;
+            _playerAnimator.SetBool("isJumping", true);
         }
 
         // Обновляем позицию игрока
@@ -50,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Road"))
         {
             _isOnRoad = true;
+            _playerAnimator.SetBool("isJumping", false);
         }
     }
 }
