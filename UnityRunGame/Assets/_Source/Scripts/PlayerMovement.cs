@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Animator _playerAnimator;
     [SerializeField] private float _playerSpeed = 0;
-    [SerializeField] private float _sideMoveSize = 0;
-    [SerializeField] private float _roadWidth = 2.25f;
+    [SerializeField] private Lane _currentLane;
+    [SerializeField] private float _laneWidth;
+    [SerializeField] private float _jumpForce;
+    [SerializeField] private Rigidbody _rigidbody; // Ссылка на компонент Rigidbody
+    [SerializeField] private bool _isOnRoad;
+
+    void Start()
+    {
+        _playerAnimator.SetBool("isRunning", true);
+    }
 
     // Update is called once per frame
     void Update()
@@ -18,21 +27,37 @@ public class PlayerMovement : MonoBehaviour
         currentPosition += transform.forward * Time.deltaTime * _playerSpeed;
 
         // Движение влево при нажатии клавиши "A"
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && _currentLane is Lane.Middle or Lane.Right)
         {
-            currentPosition.x -= _sideMoveSize * Time.deltaTime;
+            _currentLane -= 1;
+            currentPosition += Vector3.left * _laneWidth;
         }
+
         // Движение вправо при нажатии клавиши "D"
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) && _currentLane is Lane.Left or Lane.Middle)
         {
-            currentPosition.x += _sideMoveSize * Time.deltaTime;
+            _currentLane += 1;
+            currentPosition += Vector3.right * _laneWidth;
         }
 
-        // Ограничиваем движения игрока в бок(чтобы не велетел за карту)
-
-        currentPosition.x = Mathf.Clamp(currentPosition.x, -_roadWidth, _roadWidth);
+        if (Input.GetKeyDown(KeyCode.Space) && _isOnRoad)
+        {
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _isOnRoad = false;
+            _playerAnimator.SetBool("isJumping", true);
+        }
 
         // Обновляем позицию игрока
         transform.position = currentPosition;
+    }
+
+    // Проверка на столкновение с дорогой
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Road"))
+        {
+            _isOnRoad = true;
+            _playerAnimator.SetBool("isJumping", false);
+        }
     }
 }
