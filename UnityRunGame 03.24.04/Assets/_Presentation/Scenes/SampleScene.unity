@@ -221,7 +221,7 @@ MonoBehaviour:
   _playerSpeed: 5
   _currentLane: 0
   _laneWidth: 2
-  _jumpForce: 4
+  _jumpForce: 4.5
   _rigidbody: {fileID: 536978853}
   _isOnRoad: 1
 --- !u!4 &536978852
