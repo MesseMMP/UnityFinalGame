@@ -13,6 +13,6 @@ public class GameManager : MonoBehaviour
     void SpawnPlayer()
     {
         // Создаем игрока в начальной позиции (0, 0, 0)
-        _playerInstance = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        _playerInstance = Instantiate(playerPrefab, new Vector3(0, 0, -13), Quaternion.identity);
     }
 }

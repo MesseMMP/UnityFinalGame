@@ -399,7 +399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906ff1a2fdc0a4f2ab6fff27399d947f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 5951276551092957240, guid: 379b975e1b5a24bc58acd54409691778, type: 3}
 --- !u!1 &1669794952
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db39dd070c9c147938f277fd9b014f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTransform: {fileID: 5951276551092957240, guid: 379b975e1b5a24bc58acd54409691778, type: 3}
+  _player: {fileID: 0}
   _mapPrefabs:
   - {fileID: 1183120366460124475, guid: 786d8a95dcbeb4c01bc58e9cbd1db645, type: 3}
   - {fileID: 7841372405300528327, guid: 5da3391b8cd05431ca0a898a78c8ac1d, type: 3}
