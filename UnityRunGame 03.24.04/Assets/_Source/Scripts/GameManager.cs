@@ -30,14 +30,12 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        if (!_gameEnded)
-        {
-            _gameEnded = true;
-            endScoreText.text = "Your Score: " + (int)Math.Round(_currentScore);
-            // Показываем панель проигрыша
-            gameOverPanel.SetActive(true);
-            Time.timeScale = 0f; // Остановка времени в игре
-        }
+        if (_gameEnded) return;
+        _gameEnded = true;
+        endScoreText.text = "Your Score: " + (int)Math.Round(_currentScore);
+        // Показываем панель проигрыша
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f; // Остановка времени в игре
     }
 
     // Метод для перезапуска игры
@@ -53,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore()
     {
-        _currentScore += 1.0f / 1000.0f; // Увеличиваем счетчик на 1 / 1000 каждый кадр
+        _currentScore += Time.deltaTime; // Увеличиваем счетчик на 1 / 1000 каждый кадр
         scoreText.text = "Score: " + (int)Math.Round(_currentScore);
         highScoreText.text = "HighScore: " + (int)Math.Round(_highScore);
         UpdateHighScore();
