@@ -424,7 +424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -39, y: 155}
+  m_AnchoredPosition: {x: -39, y: 166}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &358164354
@@ -570,6 +570,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1493126456152182339, guid: 379b975e1b5a24bc58acd54409691778, type: 3}
   gameOverPanel: {fileID: 1961569773}
+  currentScore: 0
+  highScore: 0
   scoreText: {fileID: 120870541}
   highScoreText: {fileID: 358164354}
   endScoreText: {fileID: 641732431}

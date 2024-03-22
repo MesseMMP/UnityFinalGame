@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject playerPrefab; // Префаб игрока
     private GameObject _playerInstance; // Экземпляр игрока
     [SerializeField] public GameObject gameOverPanel; // Ссылка на панель проигрыша
-    private float _currentScore = 0;
-    private float _highScore = 0;
+    public float currentScore = 0;
+    public float highScore = 0;
     [SerializeField] public TextMeshProUGUI scoreText;
     [SerializeField] public TextMeshProUGUI highScoreText;
     [SerializeField] public TextMeshProUGUI endScoreText;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         SpawnPlayer();
-        _highScore = PlayerPrefs.GetFloat("SaveScore");
+        highScore = PlayerPrefs.GetFloat("SaveScore");
     }
 
     void SpawnPlayer()
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     {
         if (_gameEnded) return;
         _gameEnded = true;
-        endScoreText.text = "Your Score: " + (int)Math.Round(_currentScore);
+        endScoreText.text = "Your Score: " + (int)Math.Round(currentScore);
         // Показываем панель проигрыша
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f; // Остановка времени в игре
@@ -51,17 +51,17 @@ public class GameManager : MonoBehaviour
 
     public void UpdateScore()
     {
-        _currentScore += Time.deltaTime; // Увеличиваем счетчик на 1 / 1000 каждый кадр
-        scoreText.text = "Score: " + (int)Math.Round(_currentScore);
-        highScoreText.text = "HighScore: " + (int)Math.Round(_highScore);
+        currentScore += Time.deltaTime; // Увеличиваем счетчик на 1 / 1000 каждый кадр
+        scoreText.text = "Score: " + (int)Math.Round(currentScore);
+        highScoreText.text = "HighScore: " + (int)Math.Round(highScore);
         UpdateHighScore();
     }
 
     private void UpdateHighScore()
     {
-        if ((int)Math.Round(_currentScore) <= (int)Math.Round(_highScore)) return;
-        _highScore = _currentScore;
+        if ((int)Math.Round(currentScore) <= (int)Math.Round(highScore)) return;
+        highScore = currentScore;
 
-        PlayerPrefs.SetFloat("SaveScore", _highScore);
+        PlayerPrefs.SetFloat("SaveScore", highScore);
     }
 }
