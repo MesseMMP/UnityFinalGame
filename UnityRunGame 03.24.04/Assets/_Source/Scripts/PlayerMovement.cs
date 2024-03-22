@@ -13,11 +13,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody; // Ссылка на компонент Rigidbody
     private bool _isOnRoad = true;
     private bool _hasPlayedTurnAnimation = false;
-    
+    private bool _isGameOver = false;
+
     void Start()
     {
         // Начать с анимации разворота
-        StartCoroutine(StartRunningAfterDelay(_turnAnimationClip.length)); // Запускаем корутину с задержкой на длительность анимации разворота
+        StartCoroutine(
+            StartRunningAfterDelay(_turnAnimationClip
+                .length)); // Запускаем корутину с задержкой на длительность анимации разворота
     }
 
     IEnumerator StartRunningAfterDelay(float delay)
@@ -27,12 +30,11 @@ public class PlayerMovement : MonoBehaviour
         _hasPlayedTurnAnimation = true;
     }
 
-    
+
     void Update()
     {
-
         // Проверяем, была ли воспроизведена анимация разворота
-        if (_hasPlayedTurnAnimation)
+        if (_hasPlayedTurnAnimation && !_isGameOver)
         {
             // Получаем текущее положение игрока
             Vector3 currentPosition = transform.position;
@@ -63,26 +65,34 @@ public class PlayerMovement : MonoBehaviour
 
             // Обновляем позицию игрока
             transform.position = currentPosition;
+
+            // При столкновении с препятствием игрок проигрывает
+            var gameManager = FindObjectOfType<GameManager>();
+            if (gameManager)
+            {
+                gameManager.UpdateScore();
+            }
         }
     }
 
-    // Проверка на столкновение с дорогой
     void OnCollisionEnter(Collision collision)
     {
+        // Проверка на столкновение с дорогой
         if (collision.gameObject.CompareTag("Road"))
         {
-            _isOnRoad = true;
+            _isOnRoad = true;  
             _playerAnimator.SetBool("isJumping", false);
         }
-    }
 
-    // Метод для проверки, проигрывается ли в данный момент заданная анимация
-    private bool IsAnimationPlaying(string animationName)
-    {
-        // Получаем информацию о текущем состоянии аниматора
-        AnimatorStateInfo stateInfo = _playerAnimator.GetCurrentAnimatorStateInfo(0);
-
-        // Проверяем, проигрывается ли анимация с заданным именем
-        return stateInfo.IsName(animationName);
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            _isGameOver = true;
+            // При столкновении с препятствием игрок проигрывает
+            var gameManager = FindObjectOfType<GameManager>();
+            if (gameManager)
+            {
+                gameManager.EndGame();
+            }
+        }
     }
 }
