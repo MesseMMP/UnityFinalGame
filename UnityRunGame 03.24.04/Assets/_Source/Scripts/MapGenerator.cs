@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] private Transform _playerTransform;
+    [SerializeField] private GameObject _player;
     [SerializeField] private List<GameObject> _mapPrefabs;
     private float _spawnPosition = 0f;
     private int _numberMaps = 3;
@@ -24,7 +24,10 @@ public class MapGenerator : MonoBehaviour
     // Если дошли до конца карты, добавляем новый кусок карты
     private void Update()
     {
-        if (!(_playerTransform.position.z - _mapLength - 5 > _spawnPosition - _numberMaps * _mapLength)) return;
+        // Находим объект игрока в сцене
+        _player = GameObject.FindGameObjectWithTag("PlayerTag");
+
+        if (!(_player.transform.position.z - _mapLength - 5 > _spawnPosition - _numberMaps * _mapLength)) return;
         SpawnMap(Random.Range(0, _mapPrefabs.Count));
         // Чтобы не забивать сцену кучей объектов, удаляем пройденные участки карты
         DeleteMap();
